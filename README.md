@@ -120,3 +120,12 @@ CREATE TABLE tbl_loans (
     - `loan_date` (DATE): Date of the loan, marked as NOT NULL.
     - `return_date` (DATE): Date of return, marked as NOT NULL.
     - `returned` (BOOLEAN, DEFAULT FALSE): Indicates if the book has been returned, defaults to FALSE.
+
+##### Queries
+Getting the loan history of a member:
+```sql
+SELECT l.id, b.title, l.loan_date, l.return_date, l.returned
+FROM tbl_loans l
+JOIN tbl_books b ON l.book_id = b.id
+WHERE l.member_id = ?;
+```
