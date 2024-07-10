@@ -144,12 +144,20 @@ public class BookManager {
     
     private static void deleteBook(Scanner scanner, BookDAO bookDAO) {
         try {
-            System.out.println("\nEnter Book ID to Delete:");
-            int id = scanner.nextInt();
-            scanner.nextLine();
-
-            bookDAO.deleteBook(id);
-            System.out.println("Book deleted successfully.");
+            System.out.println("\nEnter ISBN to Delete");
+            System.out.print("ISBN: ");
+            String isbn = scanner.nextLine().trim();
+            
+            List<Book> books = bookDAO.findByIsbn(isbn);
+            
+            if (books.isEmpty()) {
+                System.out.println("No books found with ISBN: " + isbn);
+            } else {
+                System.out.println("Books found with ISBN " + isbn + ":");
+                	bookDAO.deleteBook(isbn);
+                	System.out.println("Book deleted successfully.");
+                
+            }    
         } catch (Exception exception) {
             System.err.println("Failed to delete book.");
             exception.printStackTrace();

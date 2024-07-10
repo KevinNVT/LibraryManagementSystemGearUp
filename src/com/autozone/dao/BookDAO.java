@@ -52,15 +52,15 @@ public class BookDAO {
 		}
 	}
 	
-	
-	public void deleteBook(int id) throws SQLException {
-		String sql = "DELETE FROM tbl_books WHERE id = ?";
+	// I decided to delete books by ISBN instead of ID
+	public void deleteBook(String isbn) throws SQLException {
+		String sql = "DELETE FROM tbl_books WHERE isbn = ?";
 
 		//try-with-resources
 		try(Connection conn = DatabaseConnection.getInstance().getConnection();
 				PreparedStatement psmt = conn.prepareStatement(sql)) {
 			
-			psmt.setInt(1, id);	
+			psmt.setString(1, isbn);	
 			psmt.executeUpdate();
 		}	
 	}
