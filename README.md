@@ -59,6 +59,9 @@ Represents important objects and the relationships between them.
   While it might seem intuitive to have a *Library* class to represent the entire library system, this approach can lead to several design issues. I would violate the Single Responsibility Principle (SRP), I would have some issues with modularity, extending functionality, testing and maintaining my application. I had some issues trying to do my UML diagram so I went back to this part and I decided to delete a single overarching *Library* class.
 
 ### Designing my DB
+By executing the following queries, you will be able to create your own DB.
+Username and password are declared on `DatabaseConnection.java`.
+
 #### My DB
 
 ```mysql
@@ -71,6 +74,7 @@ USE DB_LIBRARY;
 #### My tables
 
 ```mysql
+-- Create table tbl_books
 CREATE TABLE tbl_books (
   id INT AUTO_INCREMENT PRIMARY KEY,
   title VARCHAR(100) NOT NULL,
@@ -81,6 +85,7 @@ CREATE TABLE tbl_books (
 ```
 
 ```mysql
+-- Create table tbl_members
 CREATE TABLE tbl_members (
   id INT AUTO_INCREMENT PRIMARY KEY,
   member_name VARCHAR(100) NOT NULL,
@@ -89,6 +94,7 @@ CREATE TABLE tbl_members (
 ```
 
 ```mysql
+-- Create table tbl_loans
 CREATE TABLE tbl_loans (
   id INT AUTO_INCREMENT PRIMARY KEY,
   book_id INT NOT NULL,
