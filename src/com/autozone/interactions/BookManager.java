@@ -31,12 +31,12 @@ public class BookManager {
                 System.out.println("7. Find Book by ISBN");
                 System.out.println("8. Return to Main Menu");
 
-                // Validates user enters numbers only
+                // Validates the user enters numbers only
                 int choice = 0;
                 try {
                 	choice = scanner.nextInt();
                 } catch (Exception exception) {
-                	System.err.println("\nUse numbers, please.");
+                	System.err.println("\nInvalid choice. Please select a valid option.");
                 	exception.printStackTrace();
                 }
                 
@@ -250,7 +250,7 @@ public class BookManager {
             } else {
                 System.out.println("\nBooks found with ISBN " + isbn + ":");
                 for (Book book : books) {
-                    System.out.println("ID: " + book.getId() + " | " + "Title: " + " | " + book.getTitle() +
+                    System.out.println("ID: " + book.getId() + " | " + "Title: " + book.getTitle() +
                     		" | " + "Author: " + book.getAuthor() + " | " + "Available? " + book.isAvailable());
                 }
             }

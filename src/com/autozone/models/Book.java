@@ -1,13 +1,17 @@
 package com.autozone.models;
 
 import com.autozone.annotations.Isbn;
+import com.autozone.annotations.NotEmpty;
 import com.autozone.annotations.NotNull;
 
 public class Book {
 
 	private int id;
 	@NotNull
+	@NotEmpty
 	private String title;
+	@NotNull
+	@NotEmpty
 	private String author;
 	@Isbn
 	private String isbn;

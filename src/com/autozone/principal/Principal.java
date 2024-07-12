@@ -28,12 +28,13 @@ public class Principal {
                 System.out.println("3. Loans");
                 System.out.println("4. Exit");
                 
-                // Validates user enters numbers only
+                // Validates the user enters numbers only
                 int choice = 0;
                 try {
                 	choice = scanner.nextInt();
+                	System.out.println(choice);
                 } catch (Exception exception) {
-                	System.err.println("\nUse numbers only, please.");
+                	System.err.println("\nInvalid choice. Please select a valid option.");
                 	exception.printStackTrace();
                 }
                 

@@ -28,12 +28,12 @@ import com.autozone.models.Member;
 	                System.out.println("6. Find Member by Name");
 	                System.out.println("7. Return to Main Menu");
 	                
-	                // Validates user enters numbers only
+	                // Validates the user enters numbers only
 	                int choice = 0;
 	                try {
 	                	choice = scanner.nextInt();
 	                } catch (Exception exception) {
-	                	System.err.println("\nUse numbers, please.");
+	                	System.err.println("\nInvalid choice. Please select a valid option.");
 	                	exception.printStackTrace();
 	                }
 	                
