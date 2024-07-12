@@ -101,12 +101,25 @@ public class BookManager {
         try {
             System.out.println("\nEnter Book ID to update:");
             System.out.print("ID: ");
-            int id = scanner.nextInt();
-            scanner.nextLine();
+            // Validates the user enters numbers only
+            int id = 0;
+            String input = scanner.nextLine().trim();
+            
+            if (input == null || input.isEmpty()) {
+            	System.err.println("\nInvalid input. Please enter a valid Book ID.");
+                return;
+            }
+            
+            try {
+            	id = Integer.parseInt(input);
+            } catch (Exception exception) {
+            	System.err.println("\nInvalid choice. Please select a valid option.");
+            	exception.printStackTrace();
+            }
             
             Book existingBook = bookDAO.findBookById(id);
-            if (existingBook == null) {
-                System.out.println("Book with ID " + id + " not found.");
+            if (existingBook == null) {   
+                // No need to print this statement since findBookId already does.
                 return;
             }
             

@@ -32,7 +32,6 @@ public class Principal {
                 int choice = 0;
                 try {
                 	choice = scanner.nextInt();
-                	System.out.println(choice);
                 } catch (Exception exception) {
                 	System.err.println("\nInvalid choice. Please select a valid option.");
                 	exception.printStackTrace();

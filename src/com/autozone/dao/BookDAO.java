@@ -110,7 +110,7 @@ public class BookDAO {
                     );
                     book.setId(rs.getInt("id"));
                 } else {
-                	System.out.println("Book with ID " + id + " not found.");
+                	System.out.println("\nBook with ID " + id + " not found.");
                 }
             }
         }
