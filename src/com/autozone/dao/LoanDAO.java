@@ -23,12 +23,16 @@ public class LoanDAO {
 		try(Connection conn = DatabaseConnection.getInstance().getConnection();
 				PreparedStatement psmt = conn.prepareStatement(sql)) {
 			
-			psmt.setInt(1, loan.getMember_id());
-			psmt.setDate(2, new java.sql.Date(System.currentTimeMillis()));
-			psmt.setDate(3, loan.getReturn_date());
-			psmt.setBoolean(4, loan.isReturned());
+			psmt.setInt(1, loan.getBook_id());
+			psmt.setInt(2, loan.getMember_id());
+			psmt.setDate(3, new java.sql.Date(loan.getLoan_date().getTime())); // psmt.setDate(3, new java.sql.Date(System.currentTimeMillis()));
+			psmt.setNull(4, java.sql.Types.DATE);
+			psmt.setBoolean(5, loan.isReturned());
 			
 			psmt.executeUpdate();
+		} catch (SQLException exception) {
+			System.err.println("Failed to add loan.");
+	        exception.printStackTrace();
 		}
 	}
 	
@@ -93,14 +97,17 @@ public class LoanDAO {
 		try(Connection conn = DatabaseConnection.getInstance().getConnection();
 				PreparedStatement psmt = conn.prepareStatement(sql)) {
 			
-			psmt.setInt(1, book_id);
+				psmt.setInt(1, book_id);
 			
 			try (ResultSet resultSet = psmt.executeQuery()) {
 	            if (resultSet.next()) {
 	                available = resultSet.getBoolean("available");
+	            } else {
+	            	System.out.println("Book with ID " + book_id + " not found.");
 	            }
 	        }
 	    } catch (SQLException Exception) {
+	    	System.err.println("Error checking availability for book ID: " + book_id);
 	        Exception.printStackTrace();
 	    }
 	    

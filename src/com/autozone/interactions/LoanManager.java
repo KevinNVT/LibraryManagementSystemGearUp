@@ -74,14 +74,14 @@ public class LoanManager {
 	            boolean available = loanDAO.checkAvailableness (book_id);         
 	            
 	            if (available) {
-		            Loan loan = new Loan(book_id, member_id, loan_date, null, true);
+		            Loan loan = new Loan(book_id, member_id, loan_date, null, false);
 		            loanDAO.addLoan(loan);
-		            System.out.println("Book added successfully.");
+		            System.out.println("\nLoan added successfully.");
 	            } else {
-	            	System.out.println("Book with ID: " + book_id + "is NOT available");     
+	            	System.out.println("\nBook with ID: " + book_id + "is NOT available");     
 	            }
 	        } catch (Exception exception) {
-	            System.err.println("Failed to add book.");
+	            System.err.println("Failed to add loan.");
 	            exception.printStackTrace();
 	        }
 	    }

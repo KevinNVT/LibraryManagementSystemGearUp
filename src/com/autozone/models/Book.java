@@ -9,6 +9,7 @@ public class Book {
 	@NotNull
 	private String title;
 	private String author;
+	@Isbn
 	private String isbn;
 	private boolean available = true;
 	
