@@ -28,7 +28,15 @@ public class Principal {
                 System.out.println("3. Loans");
                 System.out.println("4. Exit");
                 
-                int choice = scanner.nextInt();
+                // Validates user enters numbers only
+                int choice = 0;
+                try {
+                	choice = scanner.nextInt();
+                } catch (Exception exception) {
+                	System.err.println("\nUse numbers only, please.");
+                	exception.printStackTrace();
+                }
+                
                 scanner.nextLine();
                 
                 switch (choice) {

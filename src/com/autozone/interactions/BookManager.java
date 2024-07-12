@@ -31,7 +31,15 @@ public class BookManager {
                 System.out.println("7. Find Book by ISBN");
                 System.out.println("8. Return to Main Menu");
 
-                int choice = scanner.nextInt();
+                // Validates user enters numbers only
+                int choice = 0;
+                try {
+                	choice = scanner.nextInt();
+                } catch (Exception exception) {
+                	System.err.println("\nUse numbers, please.");
+                	exception.printStackTrace();
+                }
+                
                 scanner.nextLine(); 
 
                 switch (choice) {
@@ -60,11 +68,11 @@ public class BookManager {
                         running = false;
                         break;
                     default:
-                        System.out.println("Invalid choice. Please select a valid option.");
+                        System.out.println("\nInvalid choice. Please select a valid option.");
                         break;
                 }
             } catch (Exception exception) {
-                System.err.println("An unexpected error has occurred");
+                System.err.println("\nAn unexpected error has occurred");
                 exception.printStackTrace();
             }
         }
@@ -82,9 +90,9 @@ public class BookManager {
 
             Book book = new Book(title, author, isbn, true);
             bookDAO.addBook(book);
-            System.out.println("Book added successfully.");
+            System.out.println("\nBook added successfully.");
         } catch (Exception exception) {
-            System.err.println("Failed to add book.");
+            System.err.println("\nFailed to add book.");
             exception.printStackTrace();
         }
     }
@@ -135,9 +143,9 @@ public class BookManager {
             }
 
             bookDAO.updateBook(existingBook);
-            System.out.println("Book updated successfully.");
+            System.out.println("\nBook updated successfully.");
         } catch (Exception exception) {
-            System.err.println("Failed to update book.");
+            System.err.println("\nFailed to update book.");
             exception.printStackTrace();
         }
     }
@@ -151,15 +159,15 @@ public class BookManager {
             List<Book> books = bookDAO.findByIsbn(isbn);
             
             if (books.isEmpty()) {
-                System.out.println("No books found with ISBN: " + isbn);
+                System.out.println("\nNo books found with ISBN: " + isbn);
             } else {
-                System.out.println("Books found with ISBN " + isbn + ":");
+                System.out.println("\nBooks found with ISBN " + isbn + ":");
                 	bookDAO.deleteBook(isbn);
-                	System.out.println("Book deleted successfully.");
+                	System.out.println("\nBook deleted successfully.");
                 
             }    
         } catch (Exception exception) {
-            System.err.println("Failed to delete book.");
+            System.err.println("\nFailed to delete book.");
             exception.printStackTrace();
         }
     }
@@ -169,9 +177,9 @@ public class BookManager {
             List<Book> books = bookDAO.findAll();
             
             if (books.isEmpty()) {
-            	System.out.println("No books found");
+            	System.out.println("\nNo books found");
             } else {
-            	System.out.println("--------------------------"); 
+            	System.out.println("\n--------------------------"); 
                 for (Book book : books) {
                 	System.out.println("Title: " + book.getTitle());
                 	System.out.println("Author: " + book.getAuthor());
@@ -182,7 +190,7 @@ public class BookManager {
                 }
             }
         } catch (Exception exception) {
-            System.err.println("Failed to retrieve books.");
+            System.err.println("\nFailed to retrieve books.");
             exception.printStackTrace();
         }
     }
@@ -193,7 +201,7 @@ public class BookManager {
             String title = scanner.nextLine();
             List<Book> books = bookDAO.findByTitle(title);
             	
-            System.out.println("--------------------------");
+            System.out.println("\n--------------------------");
             for (Book book : books) {
             	System.out.println("Title: " + book.getTitle());
             	System.out.println("Author: " + book.getAuthor());
@@ -203,7 +211,7 @@ public class BookManager {
             	System.out.println("--------------------------");
             }
         } catch (Exception exception) {
-            System.err.println("Failed to retrieve books by title.");
+            System.err.println("\nFailed to retrieve books by title.");
             exception.printStackTrace();
         }
     }
@@ -214,7 +222,7 @@ public class BookManager {
             String author = scanner.nextLine();
             List<Book> books = bookDAO.findByAuthor(author);
             
-            System.out.println("--------------------------");
+            System.out.println("\n--------------------------");
             for (Book book : books) {
             	System.out.println("Title: " + book.getTitle());
             	System.out.println("Author: " + book.getAuthor());
@@ -224,7 +232,7 @@ public class BookManager {
             	System.out.println("--------------------------");
             }
         } catch (Exception exception) {
-            System.err.println("Failed to retrieve books by author.");
+            System.err.println("\nFailed to retrieve books by author.");
             exception.printStackTrace();
         }
     }
@@ -238,15 +246,16 @@ public class BookManager {
             List<Book> books = bookDAO.findByIsbn(isbn);
             
             if (books.isEmpty()) {
-                System.out.println("No books found with ISBN: " + isbn);
+                System.out.println("\nNo books found with ISBN: " + isbn);
             } else {
-                System.out.println("Books found with ISBN " + isbn + ":");
+                System.out.println("\nBooks found with ISBN " + isbn + ":");
                 for (Book book : books) {
-                    System.out.println(book.getId() + " - " + book.getTitle() + " - " + book.getAuthor() + " - " + book.isAvailable());
+                    System.out.println("ID: " + book.getId() + " | " + "Title: " + " | " + book.getTitle() +
+                    		" | " + "Author: " + book.getAuthor() + " | " + "Available? " + book.isAvailable());
                 }
             }
         } catch (Exception exception) {
-            System.err.println("Failed to search for books by ISBN.");
+            System.err.println("\nFailed to search for books by ISBN.");
             exception.printStackTrace();
         }
     }

@@ -27,8 +27,16 @@ import com.autozone.models.Member;
 	                System.out.println("5. Find Member by ID");
 	                System.out.println("6. Find Member by Name");
 	                System.out.println("7. Return to Main Menu");
-
-	                int choice = scanner.nextInt();
+	                
+	                // Validates user enters numbers only
+	                int choice = 0;
+	                try {
+	                	choice = scanner.nextInt();
+	                } catch (Exception exception) {
+	                	System.err.println("\nUse numbers, please.");
+	                	exception.printStackTrace();
+	                }
+	                
 	                scanner.nextLine(); 
 
 	                switch (choice) {

@@ -30,7 +30,15 @@ public class LoanManager {
 	                System.out.println("4. Check for availableness");
 	                System.out.println("5. Return to Main Menu");
 
-	                int choice = scanner.nextInt();
+	                // Validates user enters numbers only
+	                int choice = 0;
+	                try {
+	                	choice = scanner.nextInt();
+	                } catch (Exception exception) {
+	                	System.err.println("\nUse numbers, please.");
+	                	exception.printStackTrace();
+	                }
+	                
 	                scanner.nextLine(); 
 
 	                switch (choice) {
