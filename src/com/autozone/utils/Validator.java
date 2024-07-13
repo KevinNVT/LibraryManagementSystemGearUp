@@ -36,7 +36,7 @@ public class Validator {
             if (field.isAnnotationPresent(MembersName.class)) {
                 String value = (String) field.get(obj);
 
-                if (value != null && !value.matches("[a-zA-Z ]+")) {
+                if (value != null && !value.matches("^[-a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\\s']+$")) {
                     throw new IllegalArgumentException(field.getName() + " is not a valid entry");
                 }
             }
@@ -45,7 +45,7 @@ public class Validator {
             if (field.isAnnotationPresent(Isbn.class)) {
                 String value = (String) field.get(obj);
 
-                if (value != null && !value.matches("[0-9]{13}")) {
+                if (value != null && !value.matches("^\\d{13}$")) {
                     throw new IllegalArgumentException(field.getName()
                             + " can only contain numbers and needs to be 13 digits long");
                 }
