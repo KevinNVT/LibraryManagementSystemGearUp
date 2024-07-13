@@ -17,7 +17,6 @@ public class LoanDAO {
 		Validator.validate(loan);
 		
 		String sql = "INSERT INTO tbl_loans (book_id, member_id, loan_date, return_date, returned) VALUES (?,?,?,?,?)";
-	    
 		
 		//try-with-resources
 		try(Connection conn = DatabaseConnection.getInstance().getConnection();

@@ -1,6 +1,9 @@
 package com.autozone.interactions;
 
+import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.InputMismatchException;
 import java.util.List;
@@ -8,6 +11,7 @@ import java.util.Scanner;
 
 import com.autozone.dao.LoanDAO;
 import com.autozone.dao.MemberDAO;
+import com.autozone.database.DatabaseConnection;
 import com.autozone.models.Loan;
 
 public class LoanManager {
@@ -68,31 +72,47 @@ public class LoanManager {
 	        }
 	    }
 	 
-	    private static void addLoan(Scanner scanner, LoanDAO loanDAO) {
-	        try {
-	            System.out.println("\nEnter Loan Details:");
-	            System.out.print("Book ID: ");
-	            int book_id = scanner.nextInt();
-	            System.out.print("Member ID: ");
-	            int member_id = scanner.nextInt();	
-	            
-	            Date loan_date = new Date(System.currentTimeMillis());
-	            System.out.println("Current time is " + loan_date);
-	            
-	            boolean available = loanDAO.checkAvailableness (book_id);         
-	            
-	            if (available) {
+	 private static void addLoan(Scanner scanner, LoanDAO loanDAO) {
+		    try {
+		        System.out.println("\nEnter Loan Details:");
+		        System.out.print("Book ID: ");
+		        int book_id = scanner.nextInt();
+		        System.out.print("Member ID: ");
+		        int member_id = scanner.nextInt();	
+		        
+		        
+		        // Validates book_id
+		        if (!validBookId(book_id)) {
+		            System.out.println("Invalid Book ID.");
+		            return;
+		        }
+		        
+		        // Validates member_id
+		        if (!validMemberId(member_id)) {
+		            System.out.println("Invalid Member ID.");
+		            return;
+		        }
+		        
+		        Date loan_date = new Date(System.currentTimeMillis());
+		        System.out.println("Current time is " + loan_date);
+		        
+		        boolean available = loanDAO.checkAvailableness(book_id);         
+		        
+		        if (available) {
 		            Loan loan = new Loan(book_id, member_id, loan_date, null, false);
 		            loanDAO.addLoan(loan);
 		            System.out.println("\nLoan added successfully.");
-	            } else {
-	            	System.out.println("\nBook with ID: " + book_id + " is NOT available");     
-	            }
-	        } catch (Exception exception) {
-	            System.err.println("Failed to add loan.");
-	            exception.printStackTrace();
-	        }
-	    }
+		        } else {
+		            System.out.println("\nBook with ID: " + book_id + " is NOT available");     
+		        }
+		    } catch (InputMismatchException e) {
+		        System.err.println("Invalid input. Please enter numeric values for Book ID and Member ID.");
+		        scanner.nextLine(); // Clear input buffer
+		    } catch (Exception e) {
+		        System.err.println("Failed to add loan.");
+		        e.printStackTrace();
+		    }
+		}
 	    
 	    private static void returnLoan(Scanner scanner, LoanDAO loanDAO, MemberDAO memberDAO) {
 	        try {
@@ -153,4 +173,39 @@ public class LoanManager {
 	            exception.printStackTrace();
 	        }
 	    }
+	    
+		private static boolean validBookId(int book_id) {
+		    try (Connection conn = DatabaseConnection.getInstance().getConnection();
+		         PreparedStatement psmt = conn.prepareStatement("SELECT COUNT(*) FROM tbl_books WHERE id = ?")) {
+		        
+		        psmt.setInt(1, book_id);
+		        ResultSet rs = psmt.executeQuery();
+		        
+		        if (rs.next()) {
+		            int count = rs.getInt(1);
+		            return count > 0; 
+		        }
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    }
+		    return false;
+		}
+		
+		private static boolean validMemberId(int member_id) {
+		    try (Connection conn = DatabaseConnection.getInstance().getConnection();
+		         PreparedStatement psmt = conn.prepareStatement("SELECT COUNT(*) FROM tbl_members WHERE id = ?")) {
+		        
+		        psmt.setInt(1, member_id);
+		        ResultSet rs = psmt.executeQuery();
+		        
+		        if (rs.next()) {
+		            int count = rs.getInt(1);
+		            return count > 0;
+		        }
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    }
+		    
+		    return false; 
+		}
 }
