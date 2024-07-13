@@ -74,10 +74,10 @@ public class LoanManager {
 	            System.out.print("Book ID: ");
 	            int book_id = scanner.nextInt();
 	            System.out.print("Member ID: ");
-	            int member_id = scanner.nextInt();	            
-	            Date loan_date = new java.sql.Date(System.currentTimeMillis());
-	            System.out.print("Current time is " + loan_date);
-	            scanner.nextLine(); 
+	            int member_id = scanner.nextInt();	
+	            
+	            Date loan_date = new Date(System.currentTimeMillis());
+	            System.out.println("Current time is " + loan_date);
 	            
 	            boolean available = loanDAO.checkAvailableness (book_id);         
 	            
@@ -86,7 +86,7 @@ public class LoanManager {
 		            loanDAO.addLoan(loan);
 		            System.out.println("\nLoan added successfully.");
 	            } else {
-	            	System.out.println("\nBook with ID: " + book_id + "is NOT available");     
+	            	System.out.println("\nBook with ID: " + book_id + " is NOT available");     
 	            }
 	        } catch (Exception exception) {
 	            System.err.println("Failed to add loan.");
@@ -121,9 +121,9 @@ public class LoanManager {
 	            boolean available = loanDAO.checkAvailableness (book_id);
 	    
 	            if (available) {
-	                System.out.println("Book with ID: " + book_id + "is available");
+	                System.out.println("Book with ID: " + book_id + " is available");
 	            } else {
-	            	System.out.println("Book with ID: " + book_id + "is NOT available");     
+	            	System.out.println("Book with ID: " + book_id + " is NOT available");     
 	            }
 	        } catch (Exception exception) {
 	            System.err.println("Failed to find book.");

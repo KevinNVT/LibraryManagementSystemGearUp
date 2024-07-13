@@ -17,7 +17,8 @@ public class LoanDAO {
 	public void addLoan(Loan loan) throws SQLException, IllegalArgumentException, IllegalAccessException {
 		Validator.validate(loan);
 		
-		String sql = "INSERT INTO tbl_loans (member_id, loan_date, return_date, returned) VALUES (?,?,?, ?)";
+		String sql = "INSERT INTO tbl_loans (book_id, member_id, loan_date, return_date, returned) VALUES (?,?,?,?,?)";
+	    
 		
 		//try-with-resources
 		try(Connection conn = DatabaseConnection.getInstance().getConnection();
@@ -25,7 +26,7 @@ public class LoanDAO {
 			
 			psmt.setInt(1, loan.getBook_id());
 			psmt.setInt(2, loan.getMember_id());
-			psmt.setDate(3, new java.sql.Date(loan.getLoan_date().getTime())); // psmt.setDate(3, new java.sql.Date(System.currentTimeMillis()));
+			psmt.setDate(3, new java.sql.Date(loan.getLoan_date().getTime()));
 			psmt.setNull(4, java.sql.Types.DATE);
 			psmt.setBoolean(5, loan.isReturned());
 			
@@ -89,28 +90,25 @@ public class LoanDAO {
 	}
 	
 	public boolean checkAvailableness(int book_id) throws SQLException {
-		
-		boolean available = false;
-		String sql = "SELECT available FROM tbl_books WHERE id = ?";
-		
-		//try-with-resources
-		try(Connection conn = DatabaseConnection.getInstance().getConnection();
-				PreparedStatement psmt = conn.prepareStatement(sql)) {
-			
-				psmt.setInt(1, book_id);
-			
-			try (ResultSet resultSet = psmt.executeQuery()) {
+	    String sql = "SELECT COUNT(*) AS count FROM tbl_loans WHERE book_id = ? AND returned = false";
+	    
+	    try (Connection conn = DatabaseConnection.getInstance().getConnection();
+	         PreparedStatement psmt = conn.prepareStatement(sql)) {
+	        
+	        psmt.setInt(1, book_id);
+	        
+	        try (ResultSet resultSet = psmt.executeQuery()) {
 	            if (resultSet.next()) {
-	                available = resultSet.getBoolean("available");
+	                int count = resultSet.getInt("count");
+	                return count == 0; 
 	            } else {
-	            	System.out.println("Book with ID " + book_id + " not found.");
+	                System.out.println("Book with ID " + book_id + " not found in loans.");
 	            }
 	        }
-	    } catch (SQLException Exception) {
-	    	System.err.println("Error checking availability for book ID: " + book_id);
-	        Exception.printStackTrace();
+	    } catch (SQLException exception) {
+	        System.err.println("Error checking availability for book ID: " + book_id);
+	        exception.printStackTrace();
 	    }
-	    
-	    return available;
+	    return false;
 	}	
 }
