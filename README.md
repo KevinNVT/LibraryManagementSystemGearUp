@@ -155,6 +155,17 @@ CREATE TABLE tbl_members (
 
 ##### Queries for inventory and members examples
 
+###### Books
+```sql
+-- Cleans tbl_books
+DELETE FROM tbl_books;
+```
+
+```sql
+-- Resets id to 1
+ALTER TABLE tbl_books AUTO_INCREMENT = 1;
+```
+
 ```sql
 -- Insert 10 books to manage an inventory
 INSERT INTO tbl_books (title, author, isbn, available)
@@ -171,6 +182,12 @@ VALUES
   ('Frankenstein', 'Mary Shelley', '9780141439471', TRUE);
 ```
 
+ ```sql
+  -- Select books
+  SELECT * FROM tbl_books; 
+  ```
+
+###### Members
 ```sql
 -- Insert some members examples
 INSERT INTO tbl_members (member_name, member_id)
@@ -189,13 +206,13 @@ VALUES
   ('Olivia Wilson', NULL);
 ```
 
--- Clean tbl_members
 ```sql
+-- Clean tbl_members
 DELETE FROM tbl_members;
 ```
 
--- Resets id to 1
 ```sql
+-- Resets id to 1
 ALTER TABLE tbl_members AUTO_INCREMENT = 1;
 ```
 

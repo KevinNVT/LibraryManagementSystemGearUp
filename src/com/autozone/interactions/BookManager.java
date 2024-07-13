@@ -88,6 +88,14 @@ public class BookManager {
             String author = scanner.nextLine();
             System.out.print("ISBN: ");
             String isbn = scanner.nextLine();
+            
+            
+            if (isbn != null && !isbn.matches("^\\d{13}$")) {
+            	System.out.println("\n" + "'" + isbn + "'" + " is not a valid ISBN.");
+            	System.out.println("ISBN must contain only numbers and must be 13 digits longi");
+                return;
+            }
+            
 
             Book book = new Book(title, author, isbn, true);
             bookDAO.addBook(book);

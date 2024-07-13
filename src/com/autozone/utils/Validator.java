@@ -49,8 +49,8 @@ public class Validator {
 
                 if (value != null && !value.matches("^\\d{13}$")) {
                     String fieldName = field.getName();
-                    String errorMessage = "El campo '" + fieldName + "' debe contener solo números y tener una longitud de 13 dígitos.";
-                    throw new IllegalArgumentException(errorMessage);
+                    String errorMessage = "Field" + fieldName + "must contain only numbers and must be 13 digits long";
+                    System.out.println(errorMessage);
                 }
             }
         }
