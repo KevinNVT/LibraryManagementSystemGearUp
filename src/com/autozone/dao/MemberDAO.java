@@ -18,31 +18,31 @@ public class MemberDAO {
 	public void addMember(Member member) throws SQLException, IllegalArgumentException, IllegalAccessException {
 		Validator.validate(member);
 		
-		String sql = "INSERT INTO tbl_members (member_name, member_id) VALUES (?,?)";
+		String sql = "INSERT INTO tbl_members (member_name) VALUES (?)";
 		
 		//try-with-resources
 		try(Connection conn = DatabaseConnection.getInstance().getConnection();
 				PreparedStatement psmt = conn.prepareStatement(sql)) {
 			
 			psmt.setString(1, member.getMember_name());
-			psmt.setString(2, member.getMember_id());
+			//psmt.setString(2, member.getMember_id());
 			
 			psmt.executeUpdate();
 		}	
 	}	
 	
-	public void updateMember(Member member, String originalId) throws SQLException, IllegalArgumentException, IllegalAccessException {
+	public void updateMember(Member member, int originalId) throws SQLException, IllegalArgumentException, IllegalAccessException {
 	    Validator.validate(member);
 	    
-	    String sql = "UPDATE tbl_members SET member_name = ?, member_id = ? WHERE member_id = ?";
+	    String sql = "UPDATE tbl_members SET member_name = ? WHERE member_id = ?";
 	    
 	    //try-with-resources
 	    try(Connection conn = DatabaseConnection.getInstance().getConnection();
 	        PreparedStatement psmt = conn.prepareStatement(sql)) {
 	        
 	        psmt.setString(1, member.getMember_name());
-	        psmt.setString(2, member.getMember_id());
-	        psmt.setString(3, originalId); 
+	        psmt.setInt(2, member.getId());
+	        psmt.setInt(3, originalId); 
 
 
 	        int rowsUpdated = psmt.executeUpdate();
@@ -91,9 +91,8 @@ public class MemberDAO {
 			
 			while(rs.next()) {
 				member = new Member(
-						rs.getString("member_name"), 
-						rs.getString("member_id")
-						);
+						rs.getString("member_name")
+				);
 
 				member.setId(rs.getInt("id"));
 				members.add(member);
@@ -115,8 +114,7 @@ public class MemberDAO {
 	        try (ResultSet rs = pstmt.executeQuery()) {
 	            while (rs.next()) {
 	                Member member = new Member(
-	                    rs.getString("member_name"),
-	                    rs.getString("member_id")
+	                    rs.getString("member_name")
 	                );
 	                
 	                member.setId(rs.getInt("id"));
@@ -141,9 +139,7 @@ public class MemberDAO {
 	        try (ResultSet rs = pstmt.executeQuery()) {
 	            while (rs.next()) {
 	                Member member = new Member(
-	                    rs.getString("member_name"),
 	                    rs.getString("member_id")
-
 	                );
 	                
 	                member.setId(rs.getInt("id"));

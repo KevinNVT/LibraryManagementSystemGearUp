@@ -79,10 +79,12 @@ import com.autozone.models.Member;
 	            System.out.println("\nEnter Member Details:");
 	            System.out.print("Member name: ");
 	            String member_name = scanner.nextLine();
-	            System.out.print("Member ID: ");
-	            String member_id = scanner.nextLine();
+	            
+	            
+	            //System.out.print("Member ID: ");
+	            //String member_id = scanner.nextLine();
 
-	            Member member = new Member(member_name, member_id);
+	            Member member = new Member(member_name);
 	            memberDAO.addMember(member);
 	            System.out.println("\nMember added successfully.");
 	        } catch (Exception exception) {
@@ -109,11 +111,11 @@ import com.autozone.models.Member;
 	            }
 
 	            Member existingMember = members.get(0);
-	            String originalId = existingMember.getMember_id(); 
+	            int originalId = existingMember.getId(); 
 
 	            System.out.println("\nCurrent Member Details:");
 	            System.out.println("Name: " + existingMember.getMember_name());
-	            System.out.println("ID: " + existingMember.getMember_id());
+	            System.out.println("ID: " + existingMember.getId());
 
 	            // User is able to leaves the answer blank to keep the current data
 	            System.out.println("\nEnter Updated Member Details (Leave blank to keep current):");
@@ -121,12 +123,6 @@ import com.autozone.models.Member;
 	            String newName = scanner.nextLine();
 	            if (!newName.isBlank()) {
 	                existingMember.setMember_name(newName);
-	            }
-
-	            System.out.print("New ID: ");
-	            String newId = scanner.nextLine();
-	            if (!newId.isBlank()) {
-	                existingMember.setMember_id(newId);
 	            }
 
 	            System.out.println("\nUpdating member with original ID: " + originalId);
@@ -162,7 +158,7 @@ import com.autozone.models.Member;
 	            	System.out.println("\n--------------------------"); 
 		            for (Member member : members) {
 		            	System.out.println("Name: " + member.getMember_name());
-		            	System.out.println("ID: " + member.getMember_id());
+		            	System.out.println("ID: " + member.getId());
 		            
 		            	System.out.println("--------------------------");
 		            }
@@ -187,8 +183,7 @@ import com.autozone.models.Member;
 	            } else {
 	                System.out.println("\nBooks found with ISBN " + member_id + ":");
 	                for (Member member : members) {
-	                    System.out.println("ID: " + member.getId() + " | " + "Name: " + member.getMember_name() +
-	                    		" | " + "Member ID: " + member.getMember_id());
+	                    System.out.println("ID: " + member.getId() + " | " + "Name: " + member.getMember_name());
 	                }
 	            }
 	        } catch (Exception exception) {
@@ -206,7 +201,7 @@ import com.autozone.models.Member;
 	            System.out.println("--------------------------");
 	            for (Member member : members) {
 	            	System.out.println("Name: " + member.getMember_name());
-	            	System.out.println("ID: " + member.getMember_id());
+	            	System.out.println("ID: " + member.getId());
 	            
 	            	System.out.println("--------------------------");
 

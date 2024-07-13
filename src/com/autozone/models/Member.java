@@ -11,13 +11,10 @@ public class Member {
 	@NotEmpty
 	@MembersName
 	private String member_name;
-	@NotNull
-	@NotEmpty
-	private String member_id;
 	
-	public Member(String member_name, String member_id) {
+	public Member(String member_name) {
 		this.member_name = member_name;
-		this.member_id = member_id;
+		//this.member_id = member_id;
 	}
 
 	public int getId() {
@@ -34,13 +31,5 @@ public class Member {
 
 	public void setMember_name(String member_name) {
 		this.member_name = member_name;
-	}
-
-	public String getMember_id() {
-		return member_id;
-	}
-
-	public void setMember_id(String member_id) {
-		this.member_id = member_id;
 	}
 }
