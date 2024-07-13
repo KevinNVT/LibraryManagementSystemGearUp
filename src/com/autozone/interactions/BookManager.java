@@ -174,7 +174,12 @@ public class BookManager {
             if (books.isEmpty()) {
                 System.out.println("\nNo books found with ISBN: " + isbn);
             } else {
-                System.out.println("\nBooks found with ISBN " + isbn + ":");
+                System.out.println("\nBooks found with ISBN " + isbn + ":");  
+                // Prints books with ISBN given
+                for (Book book : books) {
+                    System.out.println("ID: " + book.getId() + " | " + "Title: " + book.getTitle() +
+                    		" | " + "Author: " + book.getAuthor() + " | " + "Available? " + book.isAvailable());
+                }
                 	bookDAO.deleteBook(isbn);
                 	System.out.println("\nBook deleted successfully.");
                 
@@ -194,6 +199,7 @@ public class BookManager {
             } else {
             	System.out.println("\n--------------------------"); 
                 for (Book book : books) {
+                	System.out.println("ID: " + book.getId());
                 	System.out.println("Title: " + book.getTitle());
                 	System.out.println("Author: " + book.getAuthor());
                 	System.out.println("ISBN: " + book.getIsbn());
@@ -216,6 +222,7 @@ public class BookManager {
             	
             System.out.println("\n--------------------------");
             for (Book book : books) {
+            	System.out.println("ID: " + book.getId());
             	System.out.println("Title: " + book.getTitle());
             	System.out.println("Author: " + book.getAuthor());
             	System.out.println("ISBN: " + book.getIsbn());
@@ -237,6 +244,7 @@ public class BookManager {
             
             System.out.println("\n--------------------------");
             for (Book book : books) {
+            	System.out.println("ID: " + book.getId());
             	System.out.println("Title: " + book.getTitle());
             	System.out.println("Author: " + book.getAuthor());
             	System.out.println("ISBN: " + book.getIsbn());
@@ -263,6 +271,7 @@ public class BookManager {
             } else {
                 System.out.println("\nBooks found with ISBN " + isbn + ":");
                 for (Book book : books) {
+                	// I tried a different to print the data on this one
                     System.out.println("ID: " + book.getId() + " | " + "Title: " + book.getTitle() +
                     		" | " + "Author: " + book.getAuthor() + " | " + "Available? " + book.isAvailable());
                 }

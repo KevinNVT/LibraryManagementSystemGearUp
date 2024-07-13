@@ -76,11 +76,7 @@ public class MemberDAO {
 	
 	public List<Member> findAll() throws SQLException {
 		String sql = "SELECT * FROM tbl_members";
-		
 		List<Member> members = new ArrayList<Member>();
-	    if (members.isEmpty()) {
-	        throw new IllegalArgumentException("No members");
-	    }
 
 		//try-with-resources
 		try(Connection conn = DatabaseConnection.getInstance().getConnection();
@@ -90,7 +86,10 @@ public class MemberDAO {
 			Member member = null;
 			
 			while(rs.next()) {
-				member = new Member(rs.getString("member_name"), rs.getString("member_id"));
+				member = new Member(
+						rs.getString("member_name"), 
+						rs.getString("member_id")
+						);
 
 				member.setId(rs.getInt("id"));
 				members.add(member);

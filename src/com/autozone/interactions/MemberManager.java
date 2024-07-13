@@ -144,12 +144,17 @@ import com.autozone.models.Member;
 	    private static void findAllMemebers(MemberDAO memberDAO) {
 	        try {
 	            List<Member> members = memberDAO.findAll();
-	            for (Member member : members) {
-	            	System.out.println("Name: " + member.getMember_name());
-	            	System.out.println("ID: " + member.getMember_id());
 	            
-	            	System.out.println("--------------------------");
-	            	
+	            if (members.isEmpty()) {
+	            	System.out.println("\nNo members found.");
+	            } else {
+	            	System.out.println("\n--------------------------"); 
+		            for (Member member : members) {
+		            	System.out.println("Name: " + member.getMember_name());
+		            	System.out.println("ID: " + member.getMember_id());
+		            
+		            	System.out.println("--------------------------");
+		            }
 	            }
 	        } catch (Exception exception) {
 	            System.err.println("Failed to retrieve members.");
