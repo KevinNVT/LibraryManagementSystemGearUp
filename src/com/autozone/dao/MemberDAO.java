@@ -99,15 +99,9 @@ public class MemberDAO {
 		return members;
 	}
 	
-	public List<Member> findByName(String member_name) throws SQLException, IllegalArgumentException, IllegalAccessException {
-	    Validator.validate(member_name);
-		
-		String sql = "SELECT * FROM tbl_members WHERE member_name LIKE ?";
-
+	public List<Member> findByName(String member_name) throws SQLException {
+	    String sql = "SELECT * FROM tbl_members WHERE member_name LIKE ?";
 	    List<Member> members = new ArrayList<>();
-	    if (members.isEmpty()) {
-	        throw new IllegalArgumentException("Member with name " + member_name + " does not exist.");
-	    }
 
 	    // try-with-resources
 	    try (Connection conn = DatabaseConnection.getInstance().getConnection();
@@ -117,7 +111,10 @@ public class MemberDAO {
 	        
 	        try (ResultSet rs = pstmt.executeQuery()) {
 	            while (rs.next()) {
-	                Member member = new Member(rs.getString("member_name"), rs.getString("member_id"));
+	                Member member = new Member(
+	                    rs.getString("member_name"),
+	                    rs.getString("member_id")
+	                );
 	                
 	                member.setId(rs.getInt("id"));
 	                members.add(member);

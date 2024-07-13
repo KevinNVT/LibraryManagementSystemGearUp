@@ -192,6 +192,8 @@ import com.autozone.models.Member;
 	            System.out.println("\nEnter Member's name:");
 	            String name = scanner.nextLine();
 	            List<Member> members = memberDAO.findByName(name);
+	            
+	            System.out.println("--------------------------");
 	            for (Member member : members) {
 	            	System.out.println("Name: " + member.getMember_name());
 	            	System.out.println("ID: " + member.getMember_id());
@@ -200,7 +202,7 @@ import com.autozone.models.Member;
 
 	            }
 	        } catch (Exception exception) {
-	            System.err.println("/nFailed to retrieve members by name.");
+	            System.err.println("\nFailed to retrieve members by name.");
 	            exception.printStackTrace();
 	        }
 	    }
