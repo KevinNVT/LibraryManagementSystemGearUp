@@ -51,20 +51,20 @@ public class MemberDAO {
 	}
 	
 	public void deleteMember(int id) throws SQLException, IllegalArgumentException, IllegalAccessException {
-		// Validates ID is greater than 0
+	    // Validates ID is greater than 0
 	    if (id <= 0) {
 	        throw new IllegalArgumentException("ID must be greater than 0.");
 	    }
 
 	    // Verifies the member exists
 	    MemberDAO memberDAO = new MemberDAO();
-	    List<Member> members = memberDAO.findByMemberId(String.valueOf(id));
-	    if (members.isEmpty()) {
+	    Member member = memberDAO.findMemberById(id);
+	    if (member == null) {
 	        throw new IllegalArgumentException("Member with ID " + id + " does not exist.");
 	    }
 
 	    // Deletes the member
-	    String sql = "DELETE FROM tbl_members WHERE member_id = ?";
+	    String sql = "DELETE FROM tbl_members WHERE id = ?";
 	    try (Connection conn = DatabaseConnection.getInstance().getConnection();
 	         PreparedStatement psmt = conn.prepareStatement(sql)) {
 
@@ -75,30 +75,29 @@ public class MemberDAO {
 	        if (affectedRows == 0) {
 	            throw new SQLException("Failed to delete member. No rows affected.");
 	        }
-	    }		
+	    }
 	}
+
 	
 	public List<Member> findAll() throws SQLException {
-		String sql = "SELECT * FROM tbl_members";
-		List<Member> members = new ArrayList<Member>();
+	    String sql = "SELECT * FROM tbl_members";
+	    List<Member> members = new ArrayList<>();
 
-		//try-with-resources
-		try(Connection conn = DatabaseConnection.getInstance().getConnection();
-				Statement stmt = conn.createStatement();
-				ResultSet rs = stmt.executeQuery(sql)) {
-				
-			Member member = null;
-			
-			while(rs.next()) {
-				member = new Member(
-						rs.getString("member_name")
-				);
-
-				member.setId(rs.getInt("id"));
-				members.add(member);
-			}
-		}	
-		return members;
+	    // try-with-resources
+	    try (Connection conn = DatabaseConnection.getInstance().getConnection();
+	         Statement stmt = conn.createStatement();
+	         ResultSet rs = stmt.executeQuery(sql)) {
+	        
+	        while (rs.next()) {
+	            Member member = new Member(
+	                rs.getInt("id"),
+	                rs.getString("member_name")
+	            );
+	            
+	            members.add(member);
+	        }
+	    }
+	    return members;
 	}
 	
 	public List<Member> findByName(String member_name) throws SQLException {
@@ -114,10 +113,10 @@ public class MemberDAO {
 	        try (ResultSet rs = pstmt.executeQuery()) {
 	            while (rs.next()) {
 	                Member member = new Member(
+	                    rs.getInt("id"),
 	                    rs.getString("member_name")
 	                );
 	                
-	                member.setId(rs.getInt("id"));
 	                members.add(member);
 	            }
 	        }
@@ -125,28 +124,24 @@ public class MemberDAO {
 	    return members;
 	}
 	
-	public List<Member> findByMemberId(String member_id) throws SQLException {
-		
-		String sql = "SELECT * FROM tbl_members WHERE member_id = ?";
-	    List<Member> members = new ArrayList<>();
-
-	    // try-with-resources
+	public Member findMemberById(int id) {
+	    String query = "SELECT * FROM tbl_members WHERE id = ?";
+	    
 	    try (Connection conn = DatabaseConnection.getInstance().getConnection();
-	         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	         PreparedStatement stmt = conn.prepareStatement(query)) {
 	        
-	    	pstmt.setString(1, member_id);
+	        stmt.setInt(1, id);
 	        
-	        try (ResultSet rs = pstmt.executeQuery()) {
-	            while (rs.next()) {
-	                Member member = new Member(
-	                    rs.getString("member_id")
-	                );
-	                
-	                member.setId(rs.getInt("id"));
-	                members.add(member);
+	        try (ResultSet rs = stmt.executeQuery()) {
+	            if (rs.next()) {
+	                Member member = new Member(rs.getInt("id"), rs.getString("member_name"));
+	                return member;
 	            }
 	        }
+	    } catch (SQLException exception) {
+	    	exception.printStackTrace();
 	    }
-	    return members;
+	    
+	    return null;
 	}
 }

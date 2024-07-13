@@ -12,9 +12,9 @@ public class Member {
 	@MembersName
 	private String member_name;
 	
-	public Member(String member_name) {
+	public Member(int id, String member_name) {
 		this.member_name = member_name;
-		//this.member_id = member_id;
+		this.id = id;
 	}
 
 	public int getId() {

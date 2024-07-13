@@ -74,28 +74,33 @@ import com.autozone.models.Member;
 	        }
 	    }
 
-	    private static void addMember(Scanner scanner, MemberDAO memberDAO) {
-	        try {
-	            System.out.println("\nEnter Member Details:");
-	            System.out.print("Member name: ");
-	            String member_name = scanner.nextLine();
-	            
-	            
-	            //System.out.print("Member ID: ");
-	            //String member_id = scanner.nextLine();
-
-	            Member member = new Member(member_name);
-	            memberDAO.addMember(member);
-	            System.out.println("\nMember added successfully.");
-	        } catch (Exception exception) {
-	            System.err.println("\nFailed to add Member.");
-	            exception.printStackTrace();
-	        }
-	    }
+	 private static void addMember(Scanner scanner, MemberDAO memberDAO) {
+		    try {
+		        System.out.println("\nEnter Member Details:");
+		        System.out.print("Member name: ");
+		        String member_name = scanner.nextLine().trim();
+		        
+		        if (member_name.isEmpty()) {
+		            throw new IllegalArgumentException("Member name cannot be empty.");
+		        }
+		        
+		        // Generates a temporary ID
+		        int tempId = -1;
+		        
+		        Member member = new Member(tempId, member_name);
+		        memberDAO.addMember(member);
+		        System.out.println("\nMember added successfully.");
+		    } catch (IllegalArgumentException IllegalArgexception) {
+		        System.err.println("\n" + IllegalArgexception.getMessage());
+		    } catch (Exception exception) {
+		        System.err.println("\nFailed to add Member.");
+		        exception.printStackTrace();
+		    }
+		}
 	    
 	    private static void updateMember(Scanner scanner, MemberDAO memberDAO) {
 	        try {
-	            System.out.println("\nEnter Member's ID to update:");
+	            System.out.println("\nEnter Member's name to update:");
 	            System.out.print("Member's ID: ");
 	            String input = scanner.nextLine().trim();
 
@@ -104,7 +109,7 @@ import com.autozone.models.Member;
 	                return;
 	            }
 
-	            List<Member> members = memberDAO.findByMemberId(input);
+	            List<Member> members = memberDAO.findByName(input);
 	            if (members.isEmpty()) {
 	                System.out.println("\nMember with ID " + input + " not found.");
 	                return;
@@ -169,25 +174,25 @@ import com.autozone.models.Member;
 	        }
 	    }
 	    
-	    // Method not accessible by GUI but used for other verifications
+	 // Method not accessible by GUI but used for other verifications
 	    private static void findMemberByMemberId(Scanner scanner, MemberDAO memberDAO) {
 	        try {
 	            System.out.println("\nEnter Member's ID: ");
 	            System.out.print("ID: ");
-	            String member_id = scanner.nextLine().trim();
+	            int id = Integer.parseInt(scanner.nextLine().trim());
 	            
-	            List<Member> members = memberDAO.findByMemberId(member_id);
+	            Member member = memberDAO.findMemberById(id);
 	            
-	            if (members.isEmpty()) {
-	                System.out.println("\nNo members found with ID: " + member_id);
+	            if (member == null) {
+	                System.out.println("\nNo member found with ID: " + id);
 	            } else {
-	                System.out.println("\nBooks found with ISBN " + member_id + ":");
-	                for (Member member : members) {
-	                    System.out.println("ID: " + member.getId() + " | " + "Name: " + member.getMember_name());
-	                }
+	                System.out.println("\nMember found with ID " + id + ":");
+	                System.out.println("ID: " + member.getId() + " | " + "Name: " + member.getMember_name());
 	            }
+	        } catch (NumberFormatException e) {
+	            System.err.println("\nInvalid ID format. Please enter a valid integer.");
 	        } catch (Exception exception) {
-	            System.err.println("\nFailed to search for members by ID.");
+	            System.err.println("\nFailed to search for member by ID.");
 	            exception.printStackTrace();
 	        }
 	    }
