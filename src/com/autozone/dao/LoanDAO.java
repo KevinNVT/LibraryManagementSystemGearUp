@@ -52,7 +52,7 @@ public class LoanDAO {
 	        if (updatedRows > 0) {
 	            System.out.println("\nLoan returned successfully.");
 	            
-	            // Updates availability on tbl_books
+	            // Updates availability on tbl_books once the first update runs
 	            String updateTbl_books = "UPDATE tbl_books SET available = false WHERE id = ?";
 	            try (PreparedStatement psmtUpdateBook = conn.prepareStatement(updateTbl_books)) {
 	                psmtUpdateBook.setInt(1, book_id);
@@ -95,12 +95,12 @@ public class LoanDAO {
 	                        rs.getDate("l.return_date"),
 	                        rs.getBoolean("l.returned")
 	                );
-	                loan.setId(rs.getInt("l.id")); // Set the loan ID
+	                loan.setId(rs.getInt("l.id"));
 	                loans.add(loan);
 	            }
 	        }
 	    } catch (SQLException exception) {
-	        System.err.println("Failed to fetch loan history.");
+	        System.err.println("\nFailed to fetch loan history.");
 	        exception.printStackTrace();
 	        throw exception;
 	    }
@@ -121,11 +121,11 @@ public class LoanDAO {
 	                int count = resultSet.getInt("count");
 	                return count == 0; 
 	            } else {
-	                System.out.println("Book with ID " + book_id + " not found in loans.");
+	                System.out.println("\nBook with ID " + book_id + " not found in loans.");
 	            }
 	        }
 	    } catch (SQLException exception) {
-	        System.err.println("Error checking availability for book ID: " + book_id);
+	        System.err.println("\nError checking availability for book ID: " + book_id);
 	        exception.printStackTrace();
 	    }
 	    return false;

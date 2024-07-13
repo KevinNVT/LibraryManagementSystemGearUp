@@ -115,6 +115,7 @@ import com.autozone.models.Member;
 	            System.out.println("Name: " + existingMember.getMember_name());
 	            System.out.println("ID: " + existingMember.getMember_id());
 
+	            // User is able to leaves the answer blank to keep the current data
 	            System.out.println("\nEnter Updated Member Details (Leave blank to keep current):");
 	            System.out.print("New Name: ");
 	            String newName = scanner.nextLine();
@@ -128,7 +129,7 @@ import com.autozone.models.Member;
 	                existingMember.setMember_id(newId);
 	            }
 
-	            System.out.println("Updating member with original ID: " + originalId);
+	            System.out.println("\nUpdating member with original ID: " + originalId);
 	            memberDAO.updateMember(existingMember, originalId); 
 	            System.out.println("\nMember updated successfully.");
 	        } catch (Exception exception) {
@@ -172,6 +173,7 @@ import com.autozone.models.Member;
 	        }
 	    }
 	    
+	    // Method not accessible by GUI but used for other verifications
 	    private static void findMemberByMemberId(Scanner scanner, MemberDAO memberDAO) {
 	        try {
 	            System.out.println("\nEnter Member's ID: ");

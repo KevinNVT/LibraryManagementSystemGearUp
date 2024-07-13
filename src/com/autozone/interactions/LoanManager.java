@@ -62,11 +62,11 @@ public class LoanManager {
 	                    	running = false;
 	                        break;
 	                    default:
-	                        System.out.println("Invalid choice. Please select a valid option.");
+	                        System.out.println("\nInvalid choice. Please select a valid option.");
 	                        break;
 	                }
 	            } catch (Exception exception) {
-	                System.err.println("An unexpected error has occurred");
+	                System.err.println("\nAn unexpected error has occurred");
 	                exception.printStackTrace();
 	            }
 	        }
@@ -83,13 +83,13 @@ public class LoanManager {
 		        
 		        // Validates book_id
 		        if (!validBookId(book_id)) {
-		            System.out.println("Invalid Book ID.");
+		            System.out.println("\nInvalid Book ID.");
 		            return;
 		        }
 		        
 		        // Validates member_id
 		        if (!validMemberId(member_id)) {
-		            System.out.println("Invalid Member ID.");
+		            System.out.println("\nInvalid Member ID.");
 		            return;
 		        }
 		        
@@ -106,10 +106,10 @@ public class LoanManager {
 		            System.out.println("\nBook with ID: " + book_id + " is NOT available");     
 		        }
 		    } catch (InputMismatchException e) {
-		        System.err.println("Invalid input. Please enter numeric values for Book ID and Member ID.");
+		        System.err.println("\nInvalid input. Please enter numeric values for Book ID and Member ID.");
 		        scanner.nextLine(); // Clear input buffer
 		    } catch (Exception e) {
-		        System.err.println("Failed to add loan.");
+		        System.err.println("\nFailed to add loan.");
 		        e.printStackTrace();
 		    }
 		}
@@ -125,9 +125,9 @@ public class LoanManager {
 	            
 	            loanDAO.returnLoan(Integer.parseInt(member_id), book_id);
 	        } catch (InputMismatchException e) {
-	            System.err.println("Invalid input. Please enter numeric values for Book ID.");
+	            System.err.println("\nInvalid input. Please enter numeric values for Book ID.");
 	        } catch (SQLException exception) {
-	            System.err.println("Failed to return loan.");
+	            System.err.println("\nFailed to return loan.");
 	            exception.printStackTrace();
 	        }
 	    }
@@ -169,11 +169,12 @@ public class LoanManager {
 	            	System.out.println("Book with ID: " + book_id + " is NOT available");     
 	            }
 	        } catch (Exception exception) {
-	            System.err.println("Failed to find book.");
+	            System.err.println("\nFailed to find book.");
 	            exception.printStackTrace();
 	        }
 	    }
 	    
+	    // This method validates the book id exists
 		private static boolean validBookId(int book_id) {
 		    try (Connection conn = DatabaseConnection.getInstance().getConnection();
 		         PreparedStatement psmt = conn.prepareStatement("SELECT COUNT(*) FROM tbl_books WHERE id = ?")) {
@@ -191,6 +192,7 @@ public class LoanManager {
 		    return false;
 		}
 		
+		// This method validates the member id exists
 		private static boolean validMemberId(int member_id) {
 		    try (Connection conn = DatabaseConnection.getInstance().getConnection();
 		         PreparedStatement psmt = conn.prepareStatement("SELECT COUNT(*) FROM tbl_members WHERE id = ?")) {

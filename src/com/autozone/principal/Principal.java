@@ -1,6 +1,5 @@
 package com.autozone.principal;
 
-import java.util.List;
 import java.util.Scanner;
 
 import com.autozone.dao.BookDAO;
@@ -22,6 +21,7 @@ public class Principal {
 		
         while (running) {
             try {
+            	// Main menu
                 System.out.println("\nLibrary Management System");
                 System.out.println("1. Books");
                 System.out.println("2. Members");

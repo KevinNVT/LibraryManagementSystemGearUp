@@ -24,6 +24,7 @@ public class Validator {
                 }
             }
             
+            // Not Empty validation
             if (field.isAnnotationPresent(NotEmpty.class)) {
                 String value = (String) field.get(obj);
                     
@@ -32,7 +33,8 @@ public class Validator {
                 }
             }
 
-            // Members name validation. Only letters, allows spaces, compound names or multiple surnames
+            // Members name validation. Only letters, allows spaces, compound names or multiple surnames.
+            // Updated to accept accents
             if (field.isAnnotationPresent(MembersName.class)) {
                 String value = (String) field.get(obj);
 

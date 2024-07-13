@@ -10,7 +10,8 @@ import com.autozone.models.Book;
 
 public class BookManager {
 
-	 private BookDAO bookDAO;
+	 @SuppressWarnings("unused")
+	private BookDAO bookDAO;
 	 
 	 public BookManager(BookDAO bookDAO) {
 		 this.bookDAO = bookDAO;
@@ -129,6 +130,7 @@ public class BookManager {
             System.out.println("ISBN: " + existingBook.getIsbn());
             System.out.println("Available: " + existingBook.isAvailable());
             
+            // User is able to leaves the answer blank to keep the current data
             System.out.println("\nEnter Updated Book Details (Leave blank to keep current):");
             System.out.print("New Title: ");
             String newTitle = scanner.nextLine();
