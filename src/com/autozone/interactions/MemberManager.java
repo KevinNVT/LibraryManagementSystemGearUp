@@ -93,18 +93,25 @@ import com.autozone.models.Member;
 	    
 	    private static void updateMember(Scanner scanner, MemberDAO memberDAO) {
 	        try {
-	            System.out.println("\nEnter Member ID to update:");
-	            System.out.print("ID: ");
-	            String id = scanner.next();
-	            scanner.nextLine();
-	            
-	            Member existingMember = (Member) memberDAO.findByMemberId(id);
-	            if (existingMember == null) {
-	                System.out.println("\nMember with ID " + id + " not found.");
+	            System.out.println("\nEnter Member's ID to update:");
+	            System.out.print("Member's ID: ");
+	            String input = scanner.nextLine().trim();
+
+	            if (input == null || input.isEmpty()) {
+	                System.err.println("\nInvalid input. Please enter a valid Member ID.");
 	                return;
 	            }
-	            
-	            System.out.println("\nCurrent Book Details:");
+
+	            List<Member> members = memberDAO.findByMemberId(input);
+	            if (members.isEmpty()) {
+	                System.out.println("\nMember with ID " + input + " not found.");
+	                return;
+	            }
+
+	            Member existingMember = members.get(0);
+	            String originalId = existingMember.getMember_id(); 
+
+	            System.out.println("\nCurrent Member Details:");
 	            System.out.println("Name: " + existingMember.getMember_name());
 	            System.out.println("ID: " + existingMember.getMember_id());
 
@@ -112,16 +119,17 @@ import com.autozone.models.Member;
 	            System.out.print("New Name: ");
 	            String newName = scanner.nextLine();
 	            if (!newName.isBlank()) {
-	            	existingMember.setMember_name(newName);
+	                existingMember.setMember_name(newName);
 	            }
-	            
+
 	            System.out.print("New ID: ");
 	            String newId = scanner.nextLine();
 	            if (!newId.isBlank()) {
-	            	existingMember.setMember_id(newId);
+	                existingMember.setMember_id(newId);
 	            }
 
-	            memberDAO.updateMember(existingMember);
+	            System.out.println("Updating member with original ID: " + originalId);
+	            memberDAO.updateMember(existingMember, originalId); 
 	            System.out.println("\nMember updated successfully.");
 	        } catch (Exception exception) {
 	            System.err.println("\nFailed to update member.");

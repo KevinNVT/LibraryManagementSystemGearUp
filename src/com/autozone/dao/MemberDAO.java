@@ -31,20 +31,23 @@ public class MemberDAO {
 		}	
 	}	
 	
-	public void updateMember(Member member) throws SQLException, IllegalArgumentException, IllegalAccessException {
-		Validator.validate(member);
-		
-		String sql = "UPDATE tbl_members SET member_name = ?, member_id = ? WHERE member_id = ?";
-		
-		//try-with-resources
-		try(Connection conn = DatabaseConnection.getInstance().getConnection();
-				PreparedStatement psmt = conn.prepareStatement(sql)) {
-			
-			psmt.setString(1, member.getMember_name());
-			psmt.setString(2, member.getMember_id());
-			
-			psmt.executeUpdate();
-		}
+	public void updateMember(Member member, String originalId) throws SQLException, IllegalArgumentException, IllegalAccessException {
+	    Validator.validate(member);
+	    
+	    String sql = "UPDATE tbl_members SET member_name = ?, member_id = ? WHERE member_id = ?";
+	    
+	    //try-with-resources
+	    try(Connection conn = DatabaseConnection.getInstance().getConnection();
+	        PreparedStatement psmt = conn.prepareStatement(sql)) {
+	        
+	        psmt.setString(1, member.getMember_name());
+	        psmt.setString(2, member.getMember_id());
+	        psmt.setString(3, originalId); 
+
+
+	        int rowsUpdated = psmt.executeUpdate();
+	        System.out.println("Rows updated: " + rowsUpdated);
+	    }
 	}
 	
 	public void deleteMember(int id) throws SQLException, IllegalArgumentException, IllegalAccessException {
