@@ -1,14 +1,14 @@
 package com.autozone.interactions;
 
 import java.sql.Date;
+import java.sql.SQLException;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-import com.autozone.dao.BookDAO;
 import com.autozone.dao.LoanDAO;
-import com.autozone.models.Book;
+import com.autozone.dao.MemberDAO;
 import com.autozone.models.Loan;
-import com.autozone.models.Member;
 
 public class LoanManager {
 
@@ -46,7 +46,7 @@ public class LoanManager {
 	                        addLoan(scanner, loanDAO);
 	                        break;
 	                    case 2:
-	                    	// returnLoan(scanner, loanDAO);
+	                    	returnLoan(scanner, loanDAO, null);
 	                        break;
 	                    case 3:
 	                    	loanHistory(scanner, loanDAO);
@@ -94,17 +94,40 @@ public class LoanManager {
 	        }
 	    }
 	    
+	    private static void returnLoan(Scanner scanner, LoanDAO loanDAO, MemberDAO memberDAO) {
+	        try {
+	            System.out.println("\nEnter Member ID:");
+	            String member_id = scanner.nextLine();
+	                        
+	            System.out.println("Enter Book ID:");
+	            int book_id = scanner.nextInt();
+	            scanner.nextLine(); 
+	            
+	            loanDAO.returnLoan(Integer.parseInt(member_id), book_id);
+	        } catch (InputMismatchException e) {
+	            System.err.println("Invalid input. Please enter numeric values for Book ID.");
+	        } catch (SQLException exception) {
+	            System.err.println("Failed to return loan.");
+	            exception.printStackTrace();
+	        }
+	    }
+	    
 	    private static void loanHistory(Scanner scanner, LoanDAO loanDAO) {
 	        try {
 	            System.out.println("\nEnter Member ID:");
-	            int member_id = scanner.nextInt();	            
+	            int member_id = scanner.nextInt();            
 	            scanner.nextLine(); 
 	            
 	            List<Loan> loans = loanDAO.history(member_id);
+	            System.out.println("--------------------------");
 	            for (Loan loan : loans) {
-	            	System.out.println("Name: " + loan.getMember_id());
-	            	
-	            	System.out.println("--------------------------");
+	            	System.out.println("Member's ID: " + loan.getMember_id());
+	                System.out.println("Loan ID: " + loan.getId());
+	                System.out.println("Loan Date: " + loan.getLoan_date());
+	                System.out.println("Return Date: " + loan.getReturn_date());
+	                System.out.println("Returned: " + loan.isReturned());
+	                
+	                System.out.println("--------------------------");
 	            }
 	        } catch (Exception exception) {
 	            System.err.println("Failed to find member");
@@ -130,6 +153,4 @@ public class LoanManager {
 	            exception.printStackTrace();
 	        }
 	    }
-	 
-	 
 }
