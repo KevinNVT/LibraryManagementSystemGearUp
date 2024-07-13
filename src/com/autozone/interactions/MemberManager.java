@@ -98,46 +98,50 @@ import com.autozone.models.Member;
 		    }
 		}
 	    
-	    private static void updateMember(Scanner scanner, MemberDAO memberDAO) {
-	        try {
-	            System.out.println("\nEnter Member's name to update:");
-	            System.out.print("Member's ID: ");
-	            String input = scanner.nextLine().trim();
+	 private static void updateMember(Scanner scanner, MemberDAO memberDAO) {
+		    try {
+		        System.out.println("\nEnter Member ID to update:");
+		        System.out.print("ID: ");
+		        // Validates the user enters numbers only
+		        int id = 0;
+		        String input = scanner.nextLine().trim();
+		        
+		        if (input == null || input.isEmpty()) {
+		            System.err.println("\nInvalid input. Please enter a valid Member ID.");
+		            return;
+		        }
+		        
+		        try {
+		            id = Integer.parseInt(input);
+		        } catch (Exception exception) {
+		            System.err.println("\nInvalid choice. Please select a valid option.");
+		            exception.printStackTrace();
+		        }
+		        
+		        Member existingMember = memberDAO.findMemberById(id);
+		        if (existingMember == null) {   
+		            // No need to print this statement since findMemberById already does.
+		            return;
+		        }
+		        
+		        System.out.println("\nCurrent Member Details:");
+		        System.out.println("Name: " + existingMember.getMember_name());
+		        
+		        // User is able to leave the answer blank to keep the current data
+		        System.out.println("\nEnter Updated Member Details (Leave blank to keep current):");
+		        System.out.print("New Name: ");
+		        String newName = scanner.nextLine();
+		        if (!newName.isBlank()) {
+		            existingMember.setMember_name(newName);
+		        }
 
-	            if (input == null || input.isEmpty()) {
-	                System.err.println("\nInvalid input. Please enter a valid Member ID.");
-	                return;
-	            }
-
-	            List<Member> members = memberDAO.findByName(input);
-	            if (members.isEmpty()) {
-	                System.out.println("\nMember with ID " + input + " not found.");
-	                return;
-	            }
-
-	            Member existingMember = members.get(0);
-	            int originalId = existingMember.getId(); 
-
-	            System.out.println("\nCurrent Member Details:");
-	            System.out.println("Name: " + existingMember.getMember_name());
-	            System.out.println("ID: " + existingMember.getId());
-
-	            // User is able to leaves the answer blank to keep the current data
-	            System.out.println("\nEnter Updated Member Details (Leave blank to keep current):");
-	            System.out.print("New Name: ");
-	            String newName = scanner.nextLine();
-	            if (!newName.isBlank()) {
-	                existingMember.setMember_name(newName);
-	            }
-
-	            System.out.println("\nUpdating member with original ID: " + originalId);
-	            memberDAO.updateMember(existingMember, originalId); 
-	            System.out.println("\nMember updated successfully.");
-	        } catch (Exception exception) {
-	            System.err.println("\nFailed to update member.");
-	            exception.printStackTrace();
-	        }
-	    }
+		        memberDAO.updateMember(existingMember, id);
+		        System.out.println("\nMember updated successfully.");
+		    } catch (Exception exception) {
+		        System.err.println("\nFailed to update member.");
+		        exception.printStackTrace();
+		    }
+		}
 	    
 	    private static void deleteMember(Scanner scanner, MemberDAO memberDAO) {
 	        try {

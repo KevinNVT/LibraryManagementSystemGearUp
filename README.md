@@ -189,7 +189,35 @@ VALUES
   ('Olivia Wilson', NULL);
 ```
 
+-- Clean tbl_members
+```sql
+DELETE FROM tbl_members;
+```
 
+-- Resets id to 1
+```sql
+ALTER TABLE tbl_members AUTO_INCREMENT = 1;
+```
 
-
-
+```sql
+-- Inserts some members
+INSERT INTO tbl_members (member_name, member_id)
+VALUES
+  ('Wyatt García', NULL),
+  ('Kevin Varela', NULL),
+  ('Juan Pérez', NULL),
+  ('María Rodríguez', NULL),
+  ('Carlos Gómez', NULL),
+  ('Ana Martínez', NULL),
+  ('Pedro Hernández', NULL),
+  ('Emily Johnson', NULL),
+  ('Michael Smith', NULL),
+  ('Emma Brown', NULL),
+  ('William Davis', NULL),
+  ('Olivia Wilson', NULL);
+  ```
+  
+  ```sql
+  -- Select members
+  SELECT * FROM tbl_members; 
+  ```
