@@ -135,3 +135,60 @@ FROM tbl_loans l
 JOIN tbl_books b ON l.book_id = b.id
 WHERE l.member_id = ?;
 ```
+
+ Sets member_id column as null
+```sql
+-- Set member_id as null
+ALTER TABLE tbl_members
+MODIFY COLUMN member_id VARCHAR(20) NULL;
+```
+
+New tbl_members quedo
+```sql
+CREATE TABLE tbl_members (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  member_name VARCHAR(100) NOT NULL,
+  member_id VARCHAR(20) NULL
+);
+```
+
+##### Queries for inventory and members examples
+
+```sql
+-- Insert 10 books to manage an inventory
+INSERT INTO tbl_books (title, author, isbn, available)
+VALUES
+  ('The Alchemist', 'Paulo Coelho', '9780062315007', TRUE),
+  ('To Kill a Mockingbird', 'Harper Lee', '9780446310789', TRUE),
+  ('1984', 'George Orwell', '9780451524935', TRUE),
+  ('Pride and Prejudice', 'Jane Austen', '9780141439518', TRUE),
+  ('The Catcher in the Rye', 'J.D. Salinger', '9780316769488', TRUE),
+  ('One Hundred Years of Solitude', 'Gabriel Garcia Marquez', '9780060883287', TRUE),
+  ('The Hitchhiker''s Guide to the Galaxy', 'Douglas Adams', '9780345391803', TRUE),
+  ('Brave New World', 'Aldous Huxley', '9780060850524', TRUE),
+  ('The Picture of Dorian Gray', 'Oscar Wilde', '9780141439570', TRUE),
+  ('Frankenstein', 'Mary Shelley', '9780141439471', TRUE);
+```
+
+```sql
+-- Insert some members examples
+INSERT INTO tbl_members (member_name, member_id)
+VALUES
+  ('Wyatt García', NULL),
+  ('Kevin Varela', NULL),
+  ('Juan Pérez', NULL),
+  ('María Rodríguez', NULL),
+  ('Carlos Gómez', NULL),
+  ('Ana Martínez', NULL),
+  ('Pedro Hernández', NULL),
+  ('Emily Johnson', NULL),
+  ('Michael Smith', NULL),
+  ('Emma Brown', NULL),
+  ('William Davis', NULL),
+  ('Olivia Wilson', NULL);
+```
+
+
+
+
+
