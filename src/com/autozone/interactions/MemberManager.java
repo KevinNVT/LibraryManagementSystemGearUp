@@ -3,7 +3,9 @@ package com.autozone.interactions;
 import java.util.List;
 import java.util.Scanner;
 
+import com.autozone.dao.BookDAO;
 import com.autozone.dao.MemberDAO;
+import com.autozone.models.Book;
 import com.autozone.models.Member;
 
 	public class MemberManager {
@@ -53,7 +55,7 @@ import com.autozone.models.Member;
 	                    	findAllMemebers(memberDAO);
 	                        break;
 	                    case 5:
-	                    	findMemberById(scanner, memberDAO);
+	                    	findMemberByMemberId(scanner, memberDAO);
 	                        break;
 	                    case 6:
 	                    	findMemberByName(scanner, memberDAO);
@@ -62,11 +64,11 @@ import com.autozone.models.Member;
 	                        running = false;
 	                        break;
 	                    default:
-	                        System.out.println("Invalid choice. Please select a valid option.");
+	                        System.out.println("\nInvalid choice. Please select a valid option.");
 	                        break;
 	                }
 	            } catch (Exception exception) {
-	                System.err.println("An unexpected error has occurred");
+	                System.err.println("\nAn unexpected error has occurred");
 	                exception.printStackTrace();
 	            }
 	        }
@@ -82,9 +84,9 @@ import com.autozone.models.Member;
 
 	            Member member = new Member(member_name, member_id);
 	            memberDAO.addMember(member);
-	            System.out.println("Member added successfully.");
+	            System.out.println("\nMember added successfully.");
 	        } catch (Exception exception) {
-	            System.err.println("Failed to add Member.");
+	            System.err.println("\nFailed to add Member.");
 	            exception.printStackTrace();
 	        }
 	    }
@@ -96,9 +98,9 @@ import com.autozone.models.Member;
 	            String id = scanner.next();
 	            scanner.nextLine();
 	            
-	            Member existingMember = (Member) memberDAO.findById(id);
+	            Member existingMember = (Member) memberDAO.findByMemberId(id);
 	            if (existingMember == null) {
-	                System.out.println("Member with ID " + id + " not found.");
+	                System.out.println("\nMember with ID " + id + " not found.");
 	                return;
 	            }
 	            
@@ -120,9 +122,9 @@ import com.autozone.models.Member;
 	            }
 
 	            memberDAO.updateMember(existingMember);
-	            System.out.println("Member updated successfully.");
+	            System.out.println("\nMember updated successfully.");
 	        } catch (Exception exception) {
-	            System.err.println("Failed to update member.");
+	            System.err.println("\nFailed to update member.");
 	            exception.printStackTrace();
 	        }
 	    }
@@ -134,9 +136,9 @@ import com.autozone.models.Member;
 	            scanner.nextLine();
 
 	            memberDAO.deleteMember(id);
-	            System.out.println("Member deleted successfully.");
+	            System.out.println("\nMember deleted successfully.");
 	        } catch (Exception exception) {
-	            System.err.println("Failed to delete Member.");
+	            System.err.println("\nFailed to delete Member.");
 	            exception.printStackTrace();
 	        }
 	    }
@@ -157,31 +159,37 @@ import com.autozone.models.Member;
 		            }
 	            }
 	        } catch (Exception exception) {
-	            System.err.println("Failed to retrieve members.");
+	            System.err.println("\nFailed to retrieve members.");
 	            exception.printStackTrace();
 	        }
 	    }
 	    
-	    private static void findMemberById(Scanner scanner, MemberDAO memberDAO) {
+	    private static void findMemberByMemberId(Scanner scanner, MemberDAO memberDAO) {
 	        try {
-	            System.out.println("\nEnter Title to Search: ");
-	            String id = scanner.nextLine();
-	            List<Member> members = memberDAO.findById(id);
-	            for (Member member : members) {
-	            	System.out.println("Name: " + member.getMember_name());
-	            	System.out.println("ID: " + member.getMember_id());
-	            	
-	            	System.out.println("--------------------------");
+	            System.out.println("\nEnter Member's ID: ");
+	            System.out.print("ID: ");
+	            String member_id = scanner.nextLine().trim();
+	            
+	            List<Member> members = memberDAO.findByMemberId(member_id);
+	            
+	            if (members.isEmpty()) {
+	                System.out.println("\nNo members found with ID: " + member_id);
+	            } else {
+	                System.out.println("\nBooks found with ISBN " + member_id + ":");
+	                for (Member member : members) {
+	                    System.out.println("ID: " + member.getId() + " | " + "Name: " + member.getMember_name() +
+	                    		" | " + "Member ID: " + member.getMember_id());
+	                }
 	            }
 	        } catch (Exception exception) {
-	            System.err.println("Failed to retrieve members by ID.");
+	            System.err.println("\nFailed to search for members by ID.");
 	            exception.printStackTrace();
 	        }
 	    }
 
 	    private static void findMemberByName(Scanner scanner, MemberDAO memberDAO) {
 	        try {
-	            System.out.println("\nEnter Author to Search:");
+	            System.out.println("\nEnter Member's name:");
 	            String name = scanner.nextLine();
 	            List<Member> members = memberDAO.findByName(name);
 	            for (Member member : members) {
@@ -192,7 +200,7 @@ import com.autozone.models.Member;
 
 	            }
 	        } catch (Exception exception) {
-	            System.err.println("Failed to retrieve members by name.");
+	            System.err.println("/nFailed to retrieve members by name.");
 	            exception.printStackTrace();
 	        }
 	    }

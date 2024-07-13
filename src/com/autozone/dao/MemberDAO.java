@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.autozone.database.DatabaseConnection;
+import com.autozone.models.Book;
 import com.autozone.models.Member;
 import com.autozone.utils.Validator;
 
@@ -33,7 +34,7 @@ public class MemberDAO {
 	public void updateMember(Member member) throws SQLException, IllegalArgumentException, IllegalAccessException {
 		Validator.validate(member);
 		
-		String sql = "UPDATE tbl_members SET member_name = ?, member_id = ?";
+		String sql = "UPDATE tbl_members SET member_name = ?, member_id = ? WHERE member_id = ?";
 		
 		//try-with-resources
 		try(Connection conn = DatabaseConnection.getInstance().getConnection();
@@ -54,7 +55,7 @@ public class MemberDAO {
 
 	    // Verifies the member exists
 	    MemberDAO memberDAO = new MemberDAO();
-	    List<Member> members = memberDAO.findById(String.valueOf(id));
+	    List<Member> members = memberDAO.findByMemberId(String.valueOf(id));
 	    if (members.isEmpty()) {
 	        throw new IllegalArgumentException("Member with ID " + id + " does not exist.");
 	    }
@@ -126,23 +127,24 @@ public class MemberDAO {
 	    return members;
 	}
 	
-	public List<Member> findById(String member_id) throws SQLException {
-	    String sql = "SELECT * FROM tbl_members WHERE member_id LIKE ?";
-
+	public List<Member> findByMemberId(String member_id) throws SQLException {
+		
+		String sql = "SELECT * FROM tbl_members WHERE member_id = ?";
 	    List<Member> members = new ArrayList<>();
-	    if (members.isEmpty()) {
-	        throw new IllegalArgumentException("Member with ID " + member_id + " does not exist.");
-	    }
 
 	    // try-with-resources
 	    try (Connection conn = DatabaseConnection.getInstance().getConnection();
 	         PreparedStatement pstmt = conn.prepareStatement(sql)) {
 	        
-	        pstmt.setString(1, "%" + member_id + "%");
+	    	pstmt.setString(1, member_id);
 	        
 	        try (ResultSet rs = pstmt.executeQuery()) {
 	            while (rs.next()) {
-	                Member member = new Member(rs.getString("member_name"), rs.getString("member_id"));
+	                Member member = new Member(
+	                    rs.getString("member_name"),
+	                    rs.getString("member_id")
+
+	                );
 	                
 	                member.setId(rs.getInt("id"));
 	                members.add(member);
