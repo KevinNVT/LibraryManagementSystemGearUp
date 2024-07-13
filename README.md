@@ -136,14 +136,15 @@ JOIN tbl_books b ON l.book_id = b.id
 WHERE l.member_id = ?;
 ```
 
- Sets member_id column as null
+###### Sets member_id column as null
+This is just a workaround because I already created my DB and tables. Create tbl_members as explained below will be enough.
 ```sql
 -- Set member_id as null
 ALTER TABLE tbl_members
 MODIFY COLUMN member_id VARCHAR(20) NULL;
 ```
 
-New tbl_members quedo
+###### New tbl_members
 ```sql
 CREATE TABLE tbl_members (
   id INT AUTO_INCREMENT PRIMARY KEY,
