@@ -161,8 +161,29 @@ public class BookManager {
             System.out.print("New Available (true/false): ");
             String newAvailableStr = scanner.nextLine();
             if (!newAvailableStr.isBlank()) {
-                boolean newAvailable = Boolean.parseBoolean(newAvailableStr);
-                existingBook.setAvailable(newAvailable);
+                if (newAvailableStr.equalsIgnoreCase("true") || newAvailableStr.equalsIgnoreCase("false")) {
+                    boolean newAvailable = Boolean.parseBoolean(newAvailableStr);
+
+                    if (newAvailable) {
+                        // If book is available, update tbl_loan return_date and returned to true
+                        bookDAO.updateLoanStatusTrue(id);
+                        existingBook.setAvailable(newAvailable);
+                    } else {
+                        // Check if there is an active loan for the book
+                        boolean hasActiveLoan = bookDAO.hasActiveLoan(id);
+                        if (hasActiveLoan) {
+                            // If there is an active loan, update tbl_loan return_date and returned to false
+                            bookDAO.updateLoanStatusFalse(id);
+                            existingBook.setAvailable(newAvailable);
+                        } else {
+                            System.out.println("\nCannot set availability to false. No active loan found for this book.");
+                            System.out.println("Please make a loan for the book before updating its availability.");
+                            return;
+                        }
+                    }
+                } else {
+                    System.out.println("Invalid input for Available. Please enter 'true' or 'false'.");
+                }
             }
 
             bookDAO.updateBook(existingBook);

@@ -203,4 +203,68 @@ public class BookDAO {
 	    }
 	    return books;
 	}
+	
+	public void updateLoanStatusTrue(int id) {
+	    String updateLoansQuery = "UPDATE tbl_loans SET return_date = ?, returned = ? WHERE book_id = ? AND returned = false";
+	    try (Connection conn = DatabaseConnection.getInstance().getConnection();
+	         PreparedStatement psmt = conn.prepareStatement(updateLoansQuery)) {
+
+	        psmt.setDate(1, new java.sql.Date(System.currentTimeMillis()));
+	        psmt.setBoolean(2, true);
+	        psmt.setInt(3, id);
+
+	        int updatedRows = psmt.executeUpdate();
+
+	        if (updatedRows > 0) {
+	            System.out.println("\nLoan returned successfully for Book ID: " + id);
+	        } else {
+	            System.out.println("\nNo active loan found for Book ID: " + id);
+	        }
+	    } catch (SQLException exception) {
+	        System.err.println("\nFailed to update loan status.");
+	        exception.printStackTrace();
+	    }
+	}
+	
+	public void updateLoanStatusFalse(int id) {
+	    String updateLoansQuery = "UPDATE tbl_loans SET return_date = ?, returned = ? WHERE book_id = ? AND returned = false";
+	    try (Connection conn = DatabaseConnection.getInstance().getConnection();
+	         PreparedStatement psmt = conn.prepareStatement(updateLoansQuery)) {
+
+	        psmt.setDate(1, new java.sql.Date(System.currentTimeMillis()));
+	        psmt.setBoolean(2, false);
+	        psmt.setInt(3, id);
+
+	        int updatedRows = psmt.executeUpdate();
+
+	        if (updatedRows > 0) {
+	            System.out.println("\nLoan returned successfully for Book ID: " + id);
+	        } else {
+	            System.out.println("\nNo active loan found for Book ID: " + id);
+	        }
+	    } catch (SQLException exception) {
+	        System.err.println("\nFailed to update loan status.");
+	        exception.printStackTrace();
+	    }
+	}
+	
+	public boolean hasActiveLoan(int bookId) {
+	    String query = "SELECT COUNT(*) FROM tbl_loans WHERE book_id = ? AND returned = false";
+	    try (Connection conn = DatabaseConnection.getInstance().getConnection();
+	         PreparedStatement psmt = conn.prepareStatement(query)) {
+
+	        psmt.setInt(1, bookId);
+
+	        try (ResultSet rs = psmt.executeQuery()) {
+	            if (rs.next()) {
+	                int count = rs.getInt(1);
+	                return count > 0;
+	            }
+	        }
+	    } catch (SQLException exception) {
+	        System.err.println("\nFailed to check active loan status.");
+	        exception.printStackTrace();
+	    }
+	    return false;
+	}
 }
