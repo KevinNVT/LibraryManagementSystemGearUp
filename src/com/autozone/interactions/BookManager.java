@@ -152,7 +152,7 @@ public class BookManager {
                 existingBook.setAuthor(newAuthor);
             }
             
-            System.out.print("New ISBN: ");
+            System.out.print("Enter new or current ISBN: ");
             String newIsbn = scanner.nextLine();
             if (newIsbn != null) {
                 existingBook.setIsbn(newIsbn);
